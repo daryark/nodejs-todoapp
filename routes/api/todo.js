@@ -64,12 +64,46 @@ router.post("/", async (req, res, next) => {
 	}
 });
 // //UPDATE todo
-router.put("/:todoId", async (req, res, next) => {
-	res.json({ message: "template message" });
+router.put("/:id", async (req, res, next) => {
+	try {
+		const { error } = todoSchema.validate(req.body);
+		if (error) {
+			throw new createError(400, error.message);
+		}
+
+		const { id } = req.params;
+		const result = await todoOperations.updateTodo(id, req.body);
+		res.json({
+			status: "success",
+			code: 200,
+			data: {
+				result,
+			},
+		});
+	} catch (error) {
+		next(error);
+	}
 });
-// //DELETE todo
-// router.delete("/:todoId", async (req, res, next) => {
-// 	res.json({ message: "template message" });
-// });
+// DELETE todo
+router.delete("/:id", async (req, res, next) => {
+	try {
+		const { id } = req.params;
+		const result = await todoOperations.deleteTodo(id);
+
+		if (!result) {
+			throw new createError(404, `Todo with id: ${id} not found`);
+		}
+
+		res.json({
+			status: "success",
+			code: 200,
+			data: {
+				result,
+			},
+		});
+	} catch (error) {
+		next(error);
+	}
+});
 
 module.exports = router;
