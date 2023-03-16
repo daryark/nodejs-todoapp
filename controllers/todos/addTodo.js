@@ -1,6 +1,6 @@
 const todoOperations = require("../../db/todo-func");
 
-const addTodo = async (req, res, next) => {
+const addTodo = async (req, res) => {
 	const result = await todoOperations.addTodo(req.body);
 	res.status(201).json({
 		status: "success",

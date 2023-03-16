@@ -2,7 +2,7 @@
 const createError = require("http-errors");
 const todoOperations = require("../../db/todo-func");
 
-const deleteTodo = async (req, res, next) => {
+const deleteTodo = async (req, res) => {
 	const { id } = req.params;
 	const result = await todoOperations.deleteTodo(id);
 

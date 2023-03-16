@@ -1,6 +1,6 @@
 const todoOperations = require("../../db/todo-func");
 
-const updateTodo = async (req, res, next) => {
+const updateTodo = async (req, res) => {
 	try {
 		const { id } = req.params;
 		const result = await todoOperations.updateTodo(id, req.body);

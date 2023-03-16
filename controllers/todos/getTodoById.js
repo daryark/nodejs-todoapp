@@ -2,7 +2,7 @@
 const createError = require("http-errors");
 const todoOperations = require("../../db/todo-func");
 
-const getTodoById = async (req, res, next) => {
+const getTodoById = async (req, res) => {
 	const { id } = req.params;
 	const result = await todoOperations.getTodoById(id);
 	if (!result) {
