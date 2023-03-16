@@ -50,7 +50,6 @@ const deleteTodo = async (id) => {
 	return removedTodo;
 };
 
-//
 module.exports = {
 	getAll,
 	getTodoById,
