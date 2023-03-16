@@ -1,20 +1,19 @@
-/* eslint-disable new-cap */
 const express = require("express");
-// const createError = require("http-errors");
-
 const router = express.Router();
-// const todoOperations = require("../../db/todo-func");
+
 const { todos: ctrl } = require("../../controllers");
+const { validation, ctrlWrapper } = require("../../middlewares");
+const { todoSchema } = require("../../schemas");
 
 // GET all todos of // //user
-router.get("/", ctrl.getAll);
-// GET one todo by id
-router.get("/:id", ctrl.getTodoById);
-// POST new todo
-router.post("/", ctrl.addTodo);
-// //UPDATE todo
-router.put("/:id", ctrl.updateTodo);
-// DELETE todo
-router.delete("/:id", ctrl.deleteTodo);
+router.get("/", ctrlWrapper(ctrl.getAll));
+
+router.get("/:id", ctrlWrapper(ctrl.getTodoById));
+
+router.post("/", validation(todoSchema), ctrlWrapper(ctrl.addTodo));
+
+router.put("/:id", validation(todoSchema), ctrlWrapper(ctrl.updateTodo));
+
+router.delete("/:id", ctrlWrapper(ctrl.deleteTodo));
 
 module.exports = router;
