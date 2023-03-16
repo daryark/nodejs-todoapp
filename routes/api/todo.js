@@ -1,8 +1,13 @@
+/* eslint-disable new-cap */
 const express = require("express");
-// const app = require(./app);
-const router = express.Router();
+const createError = require("http-errors");
+const Joi = require("joi");
 
+const router = express.Router();
 const todoOperations = require("../../db/todo-func");
+const todoSchema = Joi.object({
+	text: Joi.string().required(),
+});
 
 // GET all todos of // //user
 router.get("/", async (req, res, next) => {
@@ -25,12 +30,7 @@ router.get("/:id", async (req, res, next) => {
 		const { id } = req.params;
 		const result = await todoOperations.getTodoById(id);
 		if (!result) {
-			res.status(404).json({
-				status: "error",
-				code: 404,
-				message: `Todo with id: ${id} not found`,
-			});
-			return;
+			throw new createError(404, `Todo with id: ${id} not found`);
 		}
 		res.json({
 			status: "success",
@@ -43,14 +43,30 @@ router.get("/:id", async (req, res, next) => {
 		next(error);
 	}
 });
-// //POST new todo
-// router.post("/", async (req, res, next) => {
-// 	res.json({ message: "template message" });
-// });
+// POST new todo
+router.post("/", async (req, res, next) => {
+	try {
+		const { error } = todoSchema.validate(req.body);
+		if (error) {
+			throw new createError(400, error.message);
+		}
+
+		const result = await todoOperations.addTodo(req.body);
+		res.status(201).json({
+			status: "success",
+			code: 201,
+			data: {
+				result,
+			},
+		});
+	} catch (error) {
+		next(error);
+	}
+});
 // //UPDATE todo
-// router.put("/:todoId", async (req, res, next) => {
-// 	res.json({ message: "template message" });
-// });
+router.put("/:todoId", async (req, res, next) => {
+	res.json({ message: "template message" });
+});
 // //DELETE todo
 // router.delete("/:todoId", async (req, res, next) => {
 // 	res.json({ message: "template message" });
