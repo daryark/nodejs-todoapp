@@ -24,3 +24,8 @@ app.use((err, req, res, next) => {
 });
 
 module.exports = app;
+
+// ID: todoapp
+// password: T7'K|fZDMq?AVBI[
+// connection name to database: atomic-nation-380813:europe-central2:todoapp
+// public ip address: 34.116.149.176

@@ -2,7 +2,7 @@ const express = require("express");
 const router = express.Router();
 
 const { todos: ctrl } = require("../../controllers");
-const { validation, ctrlWrapper } = require("../../middlewares");
+const { validation, ctrlWrapper } = require("../../middleware");
 const { todoSchema } = require("../../schemas");
 
 // GET all todos of // //user
