@@ -1,0 +1,24 @@
+{
+	"development": {
+		"username": "postgres",
+		"password": "simultaneously",
+		"database": "todo_db",
+		"host": "127.0.0.1",
+		"dialect": "postgres",
+		"port": "8080"
+	},
+	"test": {
+		"username": "postgres",
+		"password": "simultaneously",
+		"database": "todo_db",
+		"host": "127.0.0.1",
+		"dialect": "postgres"
+	},
+	"production": {
+		"username": "postgres",
+		"password": "simultaneously",
+		"database": "todo_db",
+		"host": "127.0.0.1",
+		"dialect": "postgres"
+	}
+}

@@ -1,4 +1,4 @@
-const todos = require("./todos");
+const todos = require("./todo");
 
 module.exports = {
 	todos,
