@@ -41,11 +41,10 @@ module.exports = {
 				primaryKey: true,
 				type: Sequelize.INTEGER,
 			},
-			name: {
+			category: {
 				type: Sequelize.STRING,
 				allowNull: false,
 				unique: true,
-				defaultValue: "Not sorted",
 			},
 		});
 
