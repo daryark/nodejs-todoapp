@@ -12,17 +12,44 @@ module.exports = {
 			username: {
 				type: Sequelize.STRING,
 				validate: {
-					len: [2, 30],
+					isAlphanumeric: {
+						msg: "Must contain only almphanumeric characters",
+					},
+					len: {
+						args: [2, 40],
+						msg: "Length must be from 2 to 40 symbols",
+					},
 				},
 			},
 			email: {
 				type: Sequelize.STRING,
+				validate: {
+					notEmpty: {
+						msg: "required",
+					},
+					isEmail: {
+						msg: "Not valid email",
+					},
+				},
 				allowNull: false,
 				unique: true,
 			},
 			password: {
 				type: Sequelize.STRING,
 				allowNull: false,
+				validate: {
+					notEmpty: {
+						msg: "required",
+					},
+					len: {
+						args: [6, 20],
+						msg: "Length must be from 6 to 20 symbols",
+					},
+					is: {
+						args: ["^[a-zA-Z0-9]{6,20}$"],
+						msg: "Invalid password",
+					},
+				},
 			},
 			created_at: {
 				allowNull: false,
@@ -45,6 +72,9 @@ module.exports = {
 				type: Sequelize.STRING,
 				allowNull: false,
 				unique: true,
+				isAlphanumeric: {
+					msg: "Must contain only almphanumeric characters",
+				},
 			},
 		});
 
@@ -57,7 +87,11 @@ module.exports = {
 			},
 			text: {
 				type: Sequelize.TEXT,
-				allowNull: false,
+				validate: {
+					notEmpty: {
+						msg: "type something",
+					},
+				},
 			},
 			group_id: {
 				type: Sequelize.INTEGER,
