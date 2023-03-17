@@ -1,9 +1,10 @@
 const Joi = require("joi");
+const passwordRegExp = require("./password-pattern");
 
 const userSchema = Joi.object({
-	username: Joi.string().alphanum().min(2).max(40).required(),
+	username: Joi.string().guid({ version: "uuidv4" }).alphanum().min(2).max(40).required(),
 	email: Joi.string().email().required(),
-	password: Joi.string().regex("^[a-zA-Z0-9]{6,20}$"),
+	password: Joi.string().pattern(new RegExp(passwordRegExp)),
 });
 
 module.exports = userSchema;

@@ -1,16 +1,18 @@
 "use strict";
-/** @type {import('sequelize-cli').Migration} */
+
+const passwordRegExp = require("../schemas/password-pattern");
+
 module.exports = {
-	async up(queryInterface, Sequelize) {
+	async up(queryInterface, DataTypes) {
 		await queryInterface.createTable("user", {
 			id: {
 				allowNull: false,
 				autoIncrement: true,
 				primaryKey: true,
-				type: Sequelize.INTEGER,
+				type: DataTypes.INTEGER,
 			},
 			username: {
-				type: Sequelize.STRING,
+				type: DataTypes.STRING,
 				validate: {
 					isAlphanumeric: {
 						msg: "Must contain only almphanumeric characters",
@@ -22,7 +24,7 @@ module.exports = {
 				},
 			},
 			email: {
-				type: Sequelize.STRING,
+				type: DataTypes.STRING,
 				validate: {
 					notEmpty: {
 						msg: "required",
@@ -35,7 +37,7 @@ module.exports = {
 				unique: true,
 			},
 			password: {
-				type: Sequelize.STRING,
+				type: DataTypes.STRING,
 				allowNull: false,
 				validate: {
 					notEmpty: {
@@ -46,18 +48,30 @@ module.exports = {
 						msg: "Length must be from 6 to 20 symbols",
 					},
 					is: {
-						args: ["^[a-zA-Z0-9]{6,20}$"],
+						args: [passwordRegExp],
 						msg: "Invalid password",
 					},
 				},
 			},
+			// auth_token: {
+			// 	type: DataTypes.STRING,
+			// 	defaultValue: "",
+			// },
+			// email_verification_token: {
+			// 	type: DataTypes.STRING,
+			// 	allowNull: false,
+			// },
+			// is_email_verified: {
+			// 	type: DataTypes.BOOLEAN,
+			// 	defaultValue: false,
+			// },
 			created_at: {
 				allowNull: false,
-				type: Sequelize.DATE,
+				type: DataTypes.DATE,
 			},
 			updated_at: {
 				allowNull: false,
-				type: Sequelize.DATE,
+				type: DataTypes.DATE,
 			},
 		});
 
@@ -66,10 +80,10 @@ module.exports = {
 				allowNull: false,
 				autoIncrement: true,
 				primaryKey: true,
-				type: Sequelize.INTEGER,
+				type: DataTypes.INTEGER,
 			},
 			category: {
-				type: Sequelize.STRING,
+				type: DataTypes.STRING,
 				allowNull: false,
 				unique: true,
 				isAlphanumeric: {
@@ -83,10 +97,10 @@ module.exports = {
 				allowNull: false,
 				autoIncrement: true,
 				primaryKey: true,
-				type: Sequelize.INTEGER,
+				type: DataTypes.INTEGER,
 			},
 			text: {
-				type: Sequelize.TEXT,
+				type: DataTypes.TEXT,
 				validate: {
 					notEmpty: {
 						msg: "type something",
@@ -94,7 +108,7 @@ module.exports = {
 				},
 			},
 			group_id: {
-				type: Sequelize.INTEGER,
+				type: DataTypes.INTEGER,
 				unique: true,
 				references: {
 					model: "group",
@@ -102,7 +116,7 @@ module.exports = {
 				},
 			},
 			user_id: {
-				type: Sequelize.INTEGER,
+				type: DataTypes.INTEGER,
 				allowNull: false,
 				references: {
 					model: "user",
@@ -111,15 +125,15 @@ module.exports = {
 			},
 			created_at: {
 				allowNull: false,
-				type: Sequelize.DATE,
+				type: DataTypes.DATE,
 			},
 			updated_at: {
 				allowNull: false,
-				type: Sequelize.DATE,
+				type: DataTypes.DATE,
 			},
 		});
 	},
-	async down(queryInterface, Sequelize) {
+	async down(queryInterface, DataTypes) {
 		await queryInterface.dropAllTables();
 	},
 };

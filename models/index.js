@@ -11,33 +11,54 @@ const config = require(configPath)[env];
 const db = {};
 
 let sequelize;
-if (config.use_env_variable) {
-	sequelize = new Sequelize(process.env[config.use_env_variable], config);
-} else {
-	sequelize = new Sequelize(config.database, config.username, config.password, config);
-}
+exports.Connect = () => {
+	if (config.use_env_variable) {
+		sequelize = new Sequelize(process.env[config.use_env_variable], config);
+	} else {
+		sequelize = new Sequelize(config.database, config.username, config.password, config);
+	}
 
-fs.readdirSync(__dirname)
-	.filter((file) => {
-		return (
-			file.indexOf(".") !== 0 &&
-			file !== basename &&
-			file.slice(-3) === ".js" &&
-			file.indexOf(".test.js") === -1
-		);
-	})
-	.forEach((file) => {
-		const model = require(path.join(__dirname, file))(sequelize, Sequelize.DataTypes);
-		db[model.name] = model;
+	fs.readdirSync(__dirname)
+		.filter((file) => {
+			return (
+				file.indexOf(".") !== 0 &&
+				file !== basename &&
+				file.slice(-3) === ".js" &&
+				file.indexOf(".test.js") === -1
+			);
+		})
+		.forEach((file) => {
+			const model = require(path.join(__dirname, file))(sequelize, Sequelize.DataTypes);
+			db[model.name] = model;
+		});
+
+	Object.keys(db).forEach((modelName) => {
+		if (db[modelName].associate) {
+			db[modelName].associate(db);
+		}
 	});
 
-Object.keys(db).forEach((modelName) => {
-	if (db[modelName].associate) {
-		db[modelName].associate(db);
-	}
-});
+	db.sequelize = sequelize;
+	db.Sequelize = Sequelize;
 
-db.sequelize = sequelize;
-db.Sequelize = Sequelize;
+	const DB = {
+		USER: sequelize.import("../models/User"),
+		TODO: sequelize.import("../models/Todo"),
+
+		SEQUELIZE: Sequelize,
+	};
+
+	// User and Card association
+	DB.USER.hasMany(DB.TODO, {
+		foreignKey: "user_id",
+		sourceKey: "id",
+	});
+	DB.TODO.belongsTo(DB.USER, {
+		foreignKey: "user_id",
+		sourceKey: "id",
+	});
+
+	return DB;
+};
 
 module.exports = db;
