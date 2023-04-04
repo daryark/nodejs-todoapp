@@ -1,5 +1,7 @@
-const todos = require("./todo");
+const todo = require("./todo");
+const auth = require("./auth");
 
 module.exports = {
-	todos,
+	todo,
+	auth,
 };

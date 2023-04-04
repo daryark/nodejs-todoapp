@@ -1,9 +1,9 @@
 const express = require("express");
 const router = express.Router();
 
-const { todos: ctrl } = require("../../controllers");
+const { todo: ctrl } = require("../../controllers");
 const { validation, ctrlWrapper } = require("../../middlewares");
-const { todoSchema } = require("../../schemas");
+const { todoSchema } = require("../../utils");
 
 // GET all todos of // //user
 router.get("/", ctrlWrapper(ctrl.getAll));

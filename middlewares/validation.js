@@ -7,6 +7,7 @@ const validation = (schema) => {
 			return;
 		}
 		next();
+		console.log("validation failed");
 	};
 };
 
