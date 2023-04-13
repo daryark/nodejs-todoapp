@@ -57,5 +57,3 @@ module.exports = {
 	updateTodo,
 	deleteTodo,
 };
-
-console.log("I");
